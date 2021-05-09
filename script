@@ -1,0 +1,33 @@
+study("Analysis", overlay=true)
+
+
+//New york session
+as = time(period, "1800-2400")
+ls = time(period, "0300-1200")
+ns = time(period, "0830-1100")
+Asia = na(as) ? na : blue
+London = na(ls) ? na : green
+NY = na(ns) ? na : white
+
+bgcolor(NY, title="New York")
+
+
+//Prev day HL
+D_High = security(tickerid, 'D', high[1]) 
+D_Low = security(tickerid, 'D', low[1]) 
+D_Close =  security(tickerid, 'D', close[1]) 
+D_Open =  security(tickerid, 'D', open[1]) 
+
+
+isWeekday() => dayofweek(time('D')) == sunday ? 1 : 0
+plot(isintraday ? D_High : na, title="Daily High",style=cross, color=black,linewidth=1) 
+plot(isintraday ? D_Low : na, title="Daily Low",style=cross, color=black,linewidth=1) 
+
+//sunday open
+openPrice = security(tickerid, 'D', open)
+isSunday() => dayofweek(time('D')) == sunday ? 1 : 0
+plot(isSunday() and openPrice ? openPrice:  na, title="Sunday Open",   style=linebr, linewidth=2, color=orange)
+
+
+//////
+
